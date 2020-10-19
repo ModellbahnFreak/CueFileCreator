@@ -16,9 +16,9 @@ import dateFormat from "./dateFormat";
     const streamUrl = await m3u8Load(process.argv[2], "mp3");
     const jsonMetadataURL = process.argv[3];
     const outPath = process.argv[4];
-    const runTime = parseInt(process.argv[5] || "-1", 10);
+    const runTime = parseInt(process.argv[5], 10);
 
-    if (!isFinite(runTime)) {
+    if (!isFinite(runTime) || runTime <= 0) {
         process.stderr.write("Invalid time");
         console.log("The time the script should be executed for must be positive or 0");
     }
@@ -29,7 +29,13 @@ import dateFormat from "./dateFormat";
     const outFileNameBase = path.basename(outPath) + dateFormat(now);
     const fullFilePath = path.join(path.dirname(outPath), outFileNameBase);
 
-    const ffmpeg = cp.exec(`ffmpeg -i ${streamUrl} -c copy -t ${runTime} ${fullFilePath}.mp3`);
+    const ffmpeg = cp.spawn(`ffmpeg`,
+        ["-y", "-i", "${streamUrl}", "-c", "copy", "-t", runTime.toString(10), `${fullFilePath}.mp3`],
+        {
+            detached: true,
+            stdio: "ignore"
+        });
+    ffmpeg.unref();
 
 
     let lastTrackNum = 0;
@@ -99,9 +105,6 @@ REM DATE ${new Date().toISOString()}\n`;
             }
             fs.writeFileSync(fullFilePath + ".cue", cueSheet);
             fs.writeFileSync(fullFilePath + ".json", JSON.stringify(jsonCueSheet, null, "    "));
-            if (ffmpeg.exitCode === null) {
-                ffmpeg.kill("SIGINT");
-            }
         }
     }
 
@@ -126,7 +129,7 @@ REM DATE ${new Date().toISOString()}\n`;
                     process.stderr.write("Couldn't load JSON!");
                     console.error(err);
                 });
-            if (Date.now() > endTime && endTime > 0) {
+            if (Date.now() > endTime) {
                 endScript();
             } else {
                 setTimeout(downloadJson, 5000 + (Math.random() * 75 - 38));
