@@ -1,0 +1,24 @@
+{
+  "name": "cuefilecreator",
+  "version": "1.0.0",
+  "description": "A NodeJS app creating a cue file from stream metadata of web radio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ModellbahnFreak/CueFileCreator.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ModellbahnFreak/CueFileCreator/issues"
+  },
+  "homepage": "https://github.com/ModellbahnFreak/CueFileCreator#readme",
+  "dependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.0.3"
+  }
+}
