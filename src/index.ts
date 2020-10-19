@@ -111,7 +111,7 @@ REM DATE ${new Date().toISOString()}\n`;
                 .then(res => res.json())
                 .then(body => {
                     if (!wasSaved) {
-                        console.log(body);
+                        //console.log(body);
                         if (!body || !body.length) {
                             throw new Error("Invalid response");
                         }
@@ -129,7 +129,7 @@ REM DATE ${new Date().toISOString()}\n`;
             if (Date.now() > endTime && endTime > 0) {
                 endScript();
             } else {
-                setTimeout(downloadJson, 5000);
+                setTimeout(downloadJson, 5000 + (Math.random() * 75 - 38));
             }
         }
     }
