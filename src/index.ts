@@ -30,7 +30,7 @@ import dateFormat from "./dateFormat";
     const fullFilePath = path.join(path.dirname(outPath), outFileNameBase);
 
     const ffmpeg = cp.spawn(`ffmpeg`,
-        ["-y", "-i", "${streamUrl}", "-c", "copy", "-t", runTime.toString(10), `${fullFilePath}.mp3`],
+        ["-y", "-i", streamUrl, "-c", "copy", "-t", runTime.toString(10), `${fullFilePath}.mp3`],
         {
             detached: true,
             stdio: "ignore"
